@@ -40,6 +40,9 @@ define('SESSIONS', '../../../../storage/cache/sessions/');
 // Директория содержащая графические кэш-файлы.
 define('CACHE', '../../../../storage/cache/');
 
+// Директория содержащая кэш-файлы модулей.
+define('MODULES_CACHE', '../../../../storage/cache/modules/');
+
 // Регистраниция основных функций.
 require INCLUDES . 'functions.php';
 
@@ -138,7 +141,7 @@ endif;
 if ( empty( $options['language'] ) && isset( $_POST['EN'] ) || isset( $_POST['RU'] ) ):
     $options['language'] = isset( $_POST['EN'] ) ? 'EN' : 'RU';
     file_put_contents( SESSIONS . '/options.php', '<?php return '.var_export_min( $options ).";\n" );
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 endif;
 
 // Информация о серверах
@@ -147,10 +150,10 @@ if ( empty( $options['short_name'] ) && empty( $options['full_name'] ) && empty(
     $options['short_name'] = $_POST['servers_name'];
     $options['full_name'] = $_POST['servers_full_name'];
     $options['info'] = $_POST['servers_info'];
-    $URL = '//' . $_SERVER["SERVER_NAME"] . explode('/app/',$_SERVER['REQUEST_URI'])[0];
+    $URL = '//' . $_SERVER["HTTP_HOST"] . explode('/app/',$_SERVER['REQUEST_URI'])[0];
     $options['site'] = substr( $URL, -1 ) == '/' ? $URL : $URL . '/';
     file_put_contents(SESSIONS . '/options.php', '<?php return ' . var_export_min( $options ) . ";\n");
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 // WEB KEY API
@@ -167,7 +170,7 @@ if ( empty( $options['web_key'] ) && ! empty( $_POST['web_key'] ) ) {
         $options['only_steam_64'] = 0;
         $options['avatars'] = 1;
         file_put_contents( SESSIONS . '/options.php', '<?php return '.var_export_min( $options ).";\n" );
-        header_fix( get_url(1) );
+        header_fix( get_url(2) );
     } else {
         $error = true;
     }
@@ -178,7 +181,7 @@ if ( empty( $options['web_key'] ) && ! empty( $_POST['web_key'] ) ) {
     $options['only_steam_64'] = 0;
     $options['avatars'] = 2;
     file_put_contents( SESSIONS . '/options.php', '<?php return '.var_export_min( $options ).";\n" );
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 // Sidebar
@@ -186,7 +189,7 @@ if ( empty( $options['web_key'] ) && ! empty( $_POST['web_key'] ) ) {
 if ( empty( $options['sidebar_open'] ) && ! is_int ( $options['sidebar_open'] ) && isset( $_POST['sidebar_open'] ) || isset( $_POST['sidebar_close'] ) ) {
     $options['sidebar_open'] = isset( $_POST['sidebar_open'] ) ? (int) 1 : (int) 0;
     file_put_contents(SESSIONS . '/options.php', '<?php return ' . var_export_min($options) . ";\n");
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 // Бэйджи
@@ -194,7 +197,7 @@ if ( empty( $options['sidebar_open'] ) && ! is_int ( $options['sidebar_open'] ) 
 if ( empty( $options['badge_type'] ) && ! is_int ( $options['badge_type'] ) && isset( $_POST['badge_type_1'] ) || isset( $_POST['badge_type_2'] ) ) {
     $options['badge_type'] = isset( $_POST['badge_type_1'] ) ? (int) 1 : (int) 2;
     file_put_contents(SESSIONS . '/options.php', '<?php return ' . var_export_min($options) . ";\n");
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 // Form Border
@@ -202,7 +205,7 @@ if ( empty( $options['badge_type'] ) && ! is_int ( $options['badge_type'] ) && i
 if ( empty( $options['form_border'] ) && ! is_int ( $options['form_border'] ) && isset( $_POST['form_border_0'] ) || isset( $_POST['form_border_1'] ) ) {
     $options['form_border'] = isset( $_POST['form_border_1'] ) ? (int) 1 : (int) 0;
     file_put_contents(SESSIONS . '/options.php', '<?php return ' . var_export_min($options) . ";\n");
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 // animation
@@ -210,7 +213,7 @@ if ( empty( $options['form_border'] ) && ! is_int ( $options['form_border'] ) &&
 if ( empty( $options['animations'] ) && ! is_int ( $options['animations'] ) && isset( $_POST['animations_on'] ) || isset( $_POST['animations_off'] ) ) {
     $options['animations'] = isset( $_POST['animations_on'] ) ? (int) 1 : (int) 0;
     file_put_contents(SESSIONS . '/options.php', '<?php return ' . var_export_min($options) . ";\n");
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 // dark_mode
@@ -218,7 +221,7 @@ if ( empty( $options['animations'] ) && ! is_int ( $options['animations'] ) && i
 if ( ! is_numeric( $options['dark_mode'] ) && ( isset( $_POST['dark_mode_on'] ) || isset( $_POST['dark_mode_off'] ) ) ) {
     $options['dark_mode'] = isset( $_POST['dark_mode_on'] ) ? (int) 1 : (int) 0;
     file_put_contents(SESSIONS . '/options.php', '<?php return ' . var_export_min($options) . ";\n");
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 // admin
@@ -240,7 +243,7 @@ if ( ! empty( $admins ) && isset( $_POST['check_admin_steam_da'] ) && isset( $_S
 
 if ( isset( $_POST['check_admin_steam_net'] ) && isset( $_SESSION['admin'] ) ) {
     unset( $_SESSION['admin'] );
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
 }
 
 if ( ! empty( $admins ) && isset( $_POST['admin_nosteam_save'] ) ) {
@@ -350,7 +353,7 @@ if( empty( $db ) && isset( $_POST['db_check'] ) ) {
         ];
         $mysqli->close();
         file_put_contents( SESSIONS . '/db.php', '<?php return '.var_export_opt( $db, true ).";" );
-        header_fix( get_url(1) );
+        header_fix( get_url(2) );
     } else {
         $db_check = 1;
     }
@@ -396,7 +399,7 @@ elseif ( empty( $options['animations'] ) && ! is_int ( $options['animations'] ) 
 elseif ( empty( $options['dark_mode'] ) && ! is_int ( $options['dark_mode'] ) ):
     require PAGE_CUSTOM . 'install/includes/options/dark_mode.php';
 else:
-    header_fix( '//' . $_SERVER["SERVER_NAME"] . explode('/app/',$_SERVER['REQUEST_URI'])[0] );
+    header_fix( '//' . $_SERVER["HTTP_HOST"] . explode('/app/',$_SERVER['REQUEST_URI'])[0] );
     die();
 endif?>
 </div>

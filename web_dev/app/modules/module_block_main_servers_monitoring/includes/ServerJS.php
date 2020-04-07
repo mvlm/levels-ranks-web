@@ -121,11 +121,13 @@ for ( $i_server = 0; $i_server < $servers_count; $i_server++ ):
     }
 endfor;
 
+$cache_dir = "../../../../storage/cache/modules/module_block_main_servers_monitoring";
+
 // Проверка директории под кэш
-! file_exists( '../temp' ) && mkdir( '../temp', 0777, true );
+! file_exists( $cache_dir ) && mkdir( $cache_dir, 0777, true );
 
 // Кэширование изображений с серверов для предзагрузки блоков
-( ! file_exists( '../temp/cache.php' ) || $cache != require '../temp/cache.php' ) && file_put_contents('../temp/cache.php', '<?php return ' . var_export( $cache, true) . ";" );
+( ! file_exists( $cache_dir.'/cache.php' ) || $cache != require $cache_dir.'/cache.php' ) && file_put_contents($cache_dir.'/cache.php', '<?php return ' . var_export( $cache, true) . ";" );
 
 // Вывод
 echo json_encode( $return, JSON_UNESCAPED_UNICODE );

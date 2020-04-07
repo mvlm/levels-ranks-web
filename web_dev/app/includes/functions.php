@@ -39,7 +39,7 @@ function header_fix( $url ) {
  * @since 0.2
  */
 function refresh() {
-    header_fix( get_url(1) );
+    header_fix( get_url(2) );
     exit;
 }
 

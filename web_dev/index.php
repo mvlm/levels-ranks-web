@@ -46,6 +46,9 @@ define('INCLUDES', APP . 'includes/');
 // Директория содержащая графические кэш-файлы.
 define('CACHE', STORAGE . 'cache/');
 
+// Директория содержащая кэш-файлы модулей.
+define('MODULES_CACHE', CACHE . 'modules/');
+
 // Директория с ресурсами.
 define('ASSETS', STORAGE . 'assets/');
 

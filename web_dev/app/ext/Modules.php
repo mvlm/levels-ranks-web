@@ -289,11 +289,11 @@ class Modules {
      * @return array|false         Возвращает кэш модуля.
      */
     public function get_module_cache( $module ) {
-        if( file_exists(MODULES . $module . '/temp/cache.php' ) ):
-            return require MODULES . $module . '/temp/cache.php';
+        if( file_exists( MODULES_CACHE . $module . '/cache.php' ) ):
+            return require MODULES_CACHE . $module . '/cache.php';
         else:
-            ! file_exists( MODULES . $module . '/temp' ) && mkdir( MODULES . $module . '/temp', 0777, true );
-            file_put_contents( MODULES . $module . '/temp/cache.php', '<?php return [];' );
+            ! file_exists( MODULES_CACHE . $module . '/' ) && mkdir( MODULES . $module . '/', 0777, true );
+            file_put_contents( MODULES_CACHE . $module . '/cache.php', '<?php return [];' );
             return [];
         endif;
     }
@@ -307,8 +307,8 @@ class Modules {
      * @param array $data           Массив данных.
      */
     public function set_module_cache( $module, $data ) {
-        ! file_exists( MODULES . $module . '/temp' ) && mkdir( MODULES . $module . '/temp', 0777, true );
-        file_put_contents( MODULES . $module . '/temp/cache.php', '<?php return '.var_export_min( $data ).";" );
+        ! file_exists( MODULES_CACHE . $module . '/' ) && mkdir( MODULES_CACHE . $module . '/', 0777, true );
+        file_put_contents( MODULES_CACHE . $module . '/cache.php', '<?php return '.var_export_min( $data ).";" );
     }
 
     /**
